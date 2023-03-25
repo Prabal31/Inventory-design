@@ -12,29 +12,19 @@ public final class InventoryList {
     private String SellPrice;
     private Stage window;
     int answer=5;
-
-    public int getAnswer() {
-        return answer;
-    }
     Inventory inventory;
+    int count;
 
-    public InventoryList() {
-    }
-     
-    InventoryList(String id,String name,String qoh,String rop,String SellPrice,Stage window) {
+    InventoryList(String id,String name,String qoh,String rop,String SellPrice,Stage window,int count) {
         this.id=id;
         this.name=name;
         this.qoh=qoh;
         this.rop=rop;
         this.SellPrice=SellPrice;
         this.window=window;
-   
-        inventory =new Inventory(id,name,qoh,rop,SellPrice);
-        answer=inventory.Check(window);
-        if(answer==0) {
-            invList.add(inventory);
-            print();
-        } 
+        this.count=count;
+        
+        
     }
 
     public void add(Inventory inventory) {
@@ -51,13 +41,17 @@ public final class InventoryList {
     public int length() {
         return invList.size();
     }
-    public void print() {
-        for (Inventory item: invList) {
-            System.out.println(item.id);
-            System.out.println(item.name);
-            System.out.println(item.qoh);
-            System.out.println(item.rop);
-            System.out.println(item.SellPrice);
+      public int getAnswer() {
+        return answer;
+    }
+      
+    public void check() {
+        for(int i=0;i<count;i++) {
+            inventory=new Inventory(id,name,qoh,rop,SellPrice);
+            answer=inventory.Check(window);
+            if(answer==0) {
+                invList.add(inventory);
+            } 
         }
     }
 }

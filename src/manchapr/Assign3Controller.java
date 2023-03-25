@@ -18,6 +18,8 @@ public class Assign3Controller  {
     TextField QOHTextField;
     TextField ROPTextField;
     TextField SellPriceTextField;
+    InventoryList in;
+    int count=1;
 
     public Assign3Controller(TextField itemIDTextField, TextField itemNameTextField, TextField QOHTextField, TextField ROPTextField, TextField SellPriceTextField) {
         this.itemIDTextField=itemIDTextField;
@@ -48,40 +50,36 @@ public class Assign3Controller  {
         String rop=ROPTextField.getText();
         String sellPrice=SellPriceTextField.getText();
         
-        InventoryList in = new InventoryList(id, name, qoh, rop, sellPrice, window);
-        
+        in = new InventoryList(id, name, qoh, rop, sellPrice, window,count);
+        in.check();
         if(in.getAnswer()==0) {
+            count++;
             MessageLabel.setText("Data Saved");
             MessageLabel.setTextFill(Color.GREEN);
         }
+        
     }
 
     public void ordermethod(TextArea Text,Label MessageLabel) {
-        
-        InventoryList list=new InventoryList();
-        
-        boolean found=false;
-        
-        for (int i = 0; i < list.length(); i++) {
-            int qoh = Integer.parseInt(list.invList.get(i).qoh);
-            int rop = Integer.parseInt(list.invList.get(i).rop);
-            if (qoh <= rop) {
-                String id=list.invList.get(i).id;
-                String name=list.invList.get(i).name;
-                String q=list.invList.get(i).qoh;
-                String r=list.invList.get(i).rop;
-                String SellPrice=list.invList.get(i).SellPrice;
-                System.out.println(id);
-                found=true;
+        for(int i=0;i<in.invList.size();i++) {
+            int q=Integer.parseInt(in.invList.get(i).qoh);
+            int r=Integer.parseInt(in.invList.get(i).rop);
+            if(q<=r) { 
+                Text.setText("ID :   "+in.invList.get(i).id+
+                        " Name :   "+in.invList.get(i).name+
+                        " Q-O-P :   "+in.invList.get(i).qoh+
+                        " R-O-P :   "+in.invList.get(i).rop+
+                        " SellPrice :   "+in.invList.get(i).SellPrice
+                );
+                MessageLabel.setText("");
+                addmethod(MessageLabel);
+            }
+            else {
+                MessageLabel.setText("No items to re-order.");
+                MessageLabel.setTextFill(Color.RED);
             }
         }
-        if(!found) {
-            MessageLabel.setText("No items to re-order.");
-            MessageLabel.setTextFill(Color.RED);
-
-         }
     }
-
     public void exitmethod(Stage window) {
 
             Stage popup = new Stage();
